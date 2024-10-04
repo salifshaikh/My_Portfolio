@@ -110,8 +110,8 @@ export const projectsData = [
       'Tailwind',
     ],
     imageUrl: portfolioImg,
-    sourceCodeLink: 'https://github.com/yourusername/todo-list',
-    liveDemoLink: 'https://your-todo-list-demo.com',  },
+    sourceCodeLink: 'https://github.com/salifshaikh/My_Portfolio',
+    liveDemoLink: 'https://salif-portfolio.vercel.app/',  },
   {
     title: 'EduLift',
     description: `Developed an Education Equity platform designed to provide equal learning opportunities for students. The platform offers features such as donation support, access to educational resources through the Google Books API, and a user-friendly interface for managing content.`,
@@ -127,12 +127,12 @@ export const projectsData = [
       'React-jitsi',
     ],
     imageUrl: auditMasterImg,
-    sourceCodeLink: 'https://github.com/yourusername/todo-list',
+    sourceCodeLink: 'https://github.com/salifshaikh/51_Console.Code',
     liveDemoLink: 'https://your-todo-list-demo.com',  },
   {
-    title: 'Civil Litigation Website',
+    title: 'LegalEase',
     description:
-      'Welcome Surge! A SaaS Website Builder - service that allows users to build and manage their own websites with integrated payment processing.',
+      'LegalEase is a civil litigation website designed to provide users with detailed information about civil litigation, connect them with experienced lawyers, and allow them to sign up for personalized services.',
     tags: [
       'React',
       'TypeScript',
@@ -144,8 +144,8 @@ export const projectsData = [
       'Tailwind',
     ],
     imageUrl: surgeImg,
-    sourceCodeLink: 'https://github.com/yourusername/todo-list',
-    liveDemoLink: 'https://your-todo-list-demo.com',  },
+    sourceCodeLink: 'https://github.com/salifshaikh/Civil-Litigation-Full-Stack-website',
+    liveDemoLink: 'https://civil-litigation-full-stack-website.vercel.app/',  },
   {
     title: 'BlinkCall',
     description:

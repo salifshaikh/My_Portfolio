@@ -13,13 +13,21 @@ import Link from "next/link";
 export default function About() {
   const { ref } = useSectionInView("about", 0.4);
   const divRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: divRef,
-    offset: ["0 1", "1.33 1"],
+    offset: ["start end", "end start"],
   });
-  const scaleProgess = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
-  const opacityProgess = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
+
+  const scaleProgress = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const opacityProgress = useTransform(scrollYProgress, [0, 0.5, 1], [0.6, 1, 0.6]);
+
+  const blurProgress = useTransform(
+    scrollYProgress,
+    [0, 0.3, 0.5, 0.7, 1],
+    [10, 3, 0, 5, 10]
+  );
 
   return (
     <motion.section
@@ -36,8 +44,8 @@ export default function About() {
           className="w-full overflow-hidden px-4 py-12 sm:w-[60%] sm:text-center lg:h-[700px] lg:w-[1040px] xl:w-[1180px]"
           ref={divRef}
           style={{
-            scale: scaleProgess,
-            opacity: opacityProgess,
+            scale: scaleProgress,
+            opacity: opacityProgress,
           }}
         >
           <div className="group relative w-full">
@@ -48,7 +56,7 @@ export default function About() {
                   React, Next.js, Node.js, and MongoDB. Proven ability to deliver user-centered web
                   applications with a focus on intuitive experiences and user
                   interaction. Can deliver optimal solutions in fast-paced environments. An informal Leader, which pushes and work with the team beyond capabilities.
-                Won 1x Hackathon yet and aiming to increase this count in future.
+                  Won 1x Hackathon yet and aiming to increase this count in future.
                 </span>
                 <span>
                   Seeking for Web Development opportunities where I can leverage
@@ -71,9 +79,15 @@ export default function About() {
                 </p>
               </div>
             </div>
-            <div className="absolute z-30 hidden lg:left-0 lg:top-1/4 lg:block">
+            <motion.div
+              className="absolute z-30 hidden lg:left-0 lg:top-1/4 lg:block"
+              ref={imageRef}
+              style={{
+                filter: useTransform(blurProgress, (value) => `blur(${value}px)`)
+              }}
+            >
               <div className="relative h-72 w-72 lg:h-[380px] lg:w-[380px] xl:h-[470px] xl:w-[470px]">
-                <div className="absolute inset-0 z-20 rounded-full bg-gradient-to-b transition-opacity group-hover:opacity-0"></div>
+                <div className="absolute inset-0 z-20 rounded-full bg-gradient-to-b transition-opacity"></div>
                 <div className="absolute inset-0">
                   <Image
                     src={portfolioImg}
@@ -85,7 +99,7 @@ export default function About() {
                   />
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
