@@ -84,21 +84,19 @@ export const images = {
 
 export const projectsData = [
   {
-    title: 'Alumni Association',
-    description:'Developed the structure and frontend of a MERN stack platform for alumni networking. Created key React components like profile, navbar, members, and footer',
+    title: '  TO-DO List',
+    description:'The HTML TO-DO LIST project represents a comprehensive web application designed to streamline task management and enhance productivity. Developed using HTML, Bootstrap, and jQuery, this project offers a user-friendly interface for creating, updating, and tracking tasks effortlessly.',
 
     tags: [
-      'React',
-      'MongoDB',
-      'Express',
-      'Node',
-      'Bootstrap',
+      'HTML',
       'CSS',
-      'Javascript',
+      'javascript',
+      'Bootstrap',
+      'fontawesome',
     ],
     imageUrl: filedriveImg,
-    link: 'https://github.com/salifshaikh/Alumni-Association-using-MERN',
-  },
+    sourceCodeLink: 'https://github.com/salifshaikh/HTML-to-do-list',
+    liveDemoLink: 'https://to-do-list-flax-ten-13.vercel.app/',  },
   {
     title: 'Portfolio',
     description: `Portfolio that you're currently viewing! This project showcases my work and provides information about me.`,
@@ -112,11 +110,11 @@ export const projectsData = [
       'Tailwind',
     ],
     imageUrl: portfolioImg,
-    link: 'https://github.com/salifshaikh/My_Portfolio',
-  },
+    sourceCodeLink: 'https://github.com/yourusername/todo-list',
+    liveDemoLink: 'https://your-todo-list-demo.com',  },
   {
     title: 'EduLift',
-    description: `Developed an Education Equity platform designed to provide equal learning opportunities for students. The platform offers features such as donation support, access to educational resources through the Google Books API, and a user-friendly interface for managing content. It facilitates connections between donors, educators, and students to promote equitable education.`,
+    description: `Developed an Education Equity platform designed to provide equal learning opportunities for students. The platform offers features such as donation support, access to educational resources through the Google Books API, and a user-friendly interface for managing content.`,
     tags: [
       'React',
       'TypeScript',
@@ -129,8 +127,8 @@ export const projectsData = [
       'React-jitsi',
     ],
     imageUrl: auditMasterImg,
-    link: 'https://github.com/salifshaikh/51_Console.Code',
-  },
+    sourceCodeLink: 'https://github.com/yourusername/todo-list',
+    liveDemoLink: 'https://your-todo-list-demo.com',  },
   {
     title: 'Civil Litigation Website',
     description:
@@ -146,16 +144,16 @@ export const projectsData = [
       'Tailwind',
     ],
     imageUrl: surgeImg,
-    link: 'https://github.com/salifshaikh/GPT-chatbot-using-MERN',
-  },
+    sourceCodeLink: 'https://github.com/yourusername/todo-list',
+    liveDemoLink: 'https://your-todo-list-demo.com',  },
   {
     title: 'BlinkCall',
     description:
       'Our website generates unique IDs for each session, allowing users to initiate calls without the need for traditional registration. Simply share your generated ID with others, and they can join the conversation instantly.',
     tags: ['React', 'Socket.IO', 'Nodejs', 'Expressjs', 'WebRTC', 'Git', 'yarn/nodemon'],
     imageUrl: campwithusImg,
-    link: 'https://github.com/salifshaikh/Voice-Video-Calling-Website',
-  },
+    sourceCodeLink: 'https://github.com/yourusername/todo-list',
+    liveDemoLink: 'https://your-todo-list-demo.com',  },
 ] as const;
 
 export const skillsData = [
