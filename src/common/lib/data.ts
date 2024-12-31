@@ -147,13 +147,13 @@ export const projectsData = [
     sourceCodeLink: 'https://github.com/salifshaikh/Civil-Litigation-Full-Stack-website',
     liveDemoLink: 'https://civil-litigation-full-stack-website.vercel.app/',  },
   {
-    title: 'BlinkCall',
+    title: 'Colloquy',
     description:
       'Our website generates unique IDs for each session, allowing users to initiate calls without the need for traditional registration. Simply share your generated ID with others, and they can join the conversation instantly.',
     tags: ['React', 'Socket.IO', 'Nodejs', 'Expressjs', 'WebRTC', 'Git', 'yarn/nodemon'],
     imageUrl: campwithusImg,
-    sourceCodeLink: 'https://github.com/yourusername/todo-list',
-    liveDemoLink: 'https://your-todo-list-demo.com',  },
+    sourceCodeLink: 'https://github.com/salifshaikh/Colloquy---Video-Voice-Call-Application',
+    liveDemoLink: 'https://colloquy-call-application.onrender.com/',  },
 ] as const;
 
 export const skillsData = [
