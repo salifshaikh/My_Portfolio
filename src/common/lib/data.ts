@@ -146,7 +146,7 @@ export const projectsData = [
     title: 'Citizen Link',
     description:
       'The platform is designed to enhance citizen engagement by providing convenient access to a wide range of city services, local news, community events, issue reporting and tracking, emergency alerts, and an interactive map.',
-    tags: ['HTML', 'CSS'],
+    tags: ['HTML', 'CSS', 'Bootstrap', 'Javascript'],
     imageUrl: citizenLink,
     sourceCodeLink: 'https://github.com/salifshaikh/smart-city',
     liveDemoLink: 'https://salifshaikh.github.io/smart-city/',  },
