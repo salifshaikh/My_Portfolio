@@ -8,6 +8,8 @@ import reactfoodImg from '@/../public/images/react-food.png';
 import surgeImg from '@/../public/images/surge.png';
 import portfolioImg from '@/../public/images/portfolio.png';
 import auditMasterImg from '@/../public/images/audit-master.png';
+import citizenLink from '@/../public/images/citizen-link.png';
+
 import {
   BookIcon,
   BriefcaseBusinessIcon,
@@ -84,19 +86,13 @@ export const images = {
 
 export const projectsData = [
   {
-    title: '  TO-DO List',
-    description:'The HTML TO-DO LIST project represents a comprehensive web application designed to streamline task management and enhance productivity. Developed using HTML, Bootstrap, and jQuery, this project offers a user-friendly interface for creating, updating, and tracking tasks effortlessly.',
-
-    tags: [
-      'HTML',
-      'CSS',
-      'javascript',
-      'Bootstrap',
-      'fontawesome',
-    ],
-    imageUrl: filedriveImg,
-    sourceCodeLink: 'https://github.com/salifshaikh/HTML-to-do-list',
-    liveDemoLink: 'https://to-do-list-flax-ten-13.vercel.app/',  },
+    title: 'Colloquy',
+    description:
+      'Our website generates unique IDs for each session, allowing users to initiate calls without the need for traditional registration. Simply share your generated ID with others, and they can join the conversation instantly.',
+    tags: ['React', 'Socket.IO', 'Nodejs', 'Expressjs', 'WebRTC', 'Git', 'yarn/nodemon'],
+    imageUrl: campwithusImg,
+    sourceCodeLink: 'https://github.com/salifshaikh/Colloquy---Video-Voice-Call-Application',
+    liveDemoLink: 'https://colloquy-call-application.onrender.com/', },
   {
     title: 'Portfolio',
     description: `Portfolio that you're currently viewing! This project showcases my work and provides information about me.`,
@@ -147,13 +143,13 @@ export const projectsData = [
     sourceCodeLink: 'https://github.com/salifshaikh/Civil-Litigation-Full-Stack-website',
     liveDemoLink: 'https://civil-litigation-full-stack-website.vercel.app/',  },
   {
-    title: 'Colloquy',
+    title: 'Citizen Link',
     description:
-      'Our website generates unique IDs for each session, allowing users to initiate calls without the need for traditional registration. Simply share your generated ID with others, and they can join the conversation instantly.',
-    tags: ['React', 'Socket.IO', 'Nodejs', 'Expressjs', 'WebRTC', 'Git', 'yarn/nodemon'],
-    imageUrl: campwithusImg,
-    sourceCodeLink: 'https://github.com/salifshaikh/Colloquy---Video-Voice-Call-Application',
-    liveDemoLink: 'https://colloquy-call-application.onrender.com/',  },
+      'The platform is designed to enhance citizen engagement by providing convenient access to a wide range of city services, local news, community events, issue reporting and tracking, emergency alerts, and an interactive map.',
+    tags: ['HTML', 'CSS'],
+    imageUrl: citizenLink,
+    sourceCodeLink: 'https://github.com/salifshaikh/smart-city',
+    liveDemoLink: 'https://salifshaikh.github.io/smart-city/',  },
 ] as const;
 
 export const skillsData = [
