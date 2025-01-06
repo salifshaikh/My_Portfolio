@@ -102,7 +102,7 @@ export const projectsData = [
       'Next.js',
       'Framer Motion',
       'Cloudinary',
-      'React Email',
+      'Resend API',
       'Tailwind',
     ],
     imageUrl: portfolioImg,
