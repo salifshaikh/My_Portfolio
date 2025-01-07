@@ -123,8 +123,8 @@ export const projectsData = [
       'React-jitsi',
     ],
     imageUrl: auditMasterImg,
-    sourceCodeLink: 'https://github.com/salifshaikh/51_Console.Code',
-    liveDemoLink: 'https://your-todo-list-demo.com',  },
+    sourceCodeLink: 'https://github.com/salifshaikh/Edulift---Smart-Education',
+    liveDemoLink: 'https://salifshaikh.github.io/Edulift-vdo/',  },
   {
     title: 'LegalEase',
     description:
