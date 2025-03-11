@@ -53,9 +53,9 @@ export default function About() {
               <div className="flex h-full flex-col justify-center gap-6">
                 <span>
                   I&apos;m currently a Frontend and potentially a Full-Stack developer with expertise in TypeScript,
-                  React, Next.js, Node.js, and MongoDB. Proven ability to deliver user-centered web
+                  React, Next.js, Firebase and Integrating API's. Proven ability to deliver user-centered web
                   applications with a focus on intuitive experiences and user
-                  interaction. Can deliver optimal solutions in fast-paced environments. An informal Leader, which pushes and work with the team beyond capabilities.
+                  interaction. Can deliver optimal solutions in fast-paced environments. An informal Leader, which pushes and works with the team beyond capabilities.
                   Won 1x Hackathon yet and aiming to increase this count in future.
                 </span>
                 <span>
