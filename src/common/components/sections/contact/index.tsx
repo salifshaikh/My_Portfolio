@@ -38,7 +38,7 @@ export default function Contact() {
       transition: {
         duration: 3,
         repeat: Infinity,
-        repeatType: "reverse",
+        repeatType: "reverse" as const,
       },
     },
   };

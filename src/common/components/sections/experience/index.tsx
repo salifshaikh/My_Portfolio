@@ -19,7 +19,7 @@ export default function Experience() {
   const hasMounted = useHasMounted();
 
   // Critical fix: We need to ensure dark mode elements are visible
-  const timelineElementStyle = {
+  const timelineElementStyle: React.CSSProperties = {
     background: theme === 'light' ? '#f3f4f6' : 'rgba(255, 255, 255, 0.05)',
     boxShadow: 'none',
     border: '1px solid rgba(0, 0, 0, 0.05)',
