@@ -7,9 +7,11 @@ import SubmitBtn from "./_components/submit-btn";
 import SectionHeading from "@/common/components/shared/section-heading";
 import toast from "react-hot-toast";
 import { sendEmail } from "@/common/utils/actions/send-email";
+import { useTheme } from 'next-themes';
 
 export default function Contact() {
   const { ref } = useSectionInView("contact");
+  const { theme } = useTheme();
 
   // Animation variants
   const containerVariants = {
@@ -42,6 +44,22 @@ export default function Contact() {
       },
     },
   };
+  const particles = Array.from({ length: 20 }, (_, i) => i);
+  
+  const particleVariants = {
+    animate: (i: number) => ({
+      y: [0, -30, 0],
+      x: [0, i % 2 === 0 ? 10 : -10, 0],
+      opacity: [0, 0.7, 0],
+      scale: [0.5, 1, 0.5],
+      transition: {
+        repeat: Infinity,
+        duration: 5 + (i % 5),
+        delay: i * 0.2,
+        ease: "easeInOut",
+      }
+    })
+  };
 
   return (
     <motion.section
@@ -54,10 +72,31 @@ export default function Contact() {
       viewport={{ once: true }}
     >
       {/* Background gradient circles */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-r from-blue-400/20 to-cyan-300/20 blur-3xl dark:from-blue-400/10 dark:to-cyan-300/10"></div>
-        <div className="absolute -right-20 bottom-10 h-72 w-72 rounded-full bg-gradient-to-l from-cyan-300/20 to-blue-400/20 blur-3xl dark:from-cyan-300/10 dark:to-blue-400/10"></div>
-      </div>
+      <div className="absolute inset-0 z-0 overflow-hidden">
+              <div className="absolute left-1/4 top-1/4 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/5 blur-3xl"></div>
+              <div className="absolute right-1/4 top-3/4 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-500/5 blur-3xl"></div>
+              <div className="absolute right-1/3 top-1/3 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/5 blur-3xl"></div>
+              
+              {/* Floating particles */}
+              {particles.map((i) => (
+                <motion.div
+                  key={i}
+                  className={`absolute rounded-full ${
+                    theme === 'light' ? 'bg-blue-400' : 'bg-blue-500'
+                  }`}
+                  style={{
+                    width: `${4 + (i % 8)}px`,
+                    height: `${4 + (i % 8)}px`,
+                    left: `${10 + (i * 5)}%`,
+                    top: `${10 + ((i * 7) % 80)}%`,
+                    opacity: 0.1,
+                  }}
+                  custom={i}
+                  variants={particleVariants}
+                  animate="animate"
+                />
+              ))}
+            </div>
 
       {/* Content */}
       <motion.div
