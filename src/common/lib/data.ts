@@ -62,7 +62,7 @@ export const experiencesData = [
   {
     title: 'HSC',
     location: 'Sardar Valabhbhai Patel Vidyalaya',
-    description: `Cleared Entrance Exams like JEE MAINS'22 AND MHTCET'22 with 93%ile in both. Rest whole junior college passed in lockdown. Percentage - 61.67`,
+    description: `Cleared Entrance Exams like JEE MAINS'22 AND MHTCET'22 with 93%ile in both. HSC Percentage - 61.67`,
     icon: React.createElement(LaptopMinimalIcon),
     date: '2020 - 2022',
   },
@@ -70,7 +70,8 @@ export const experiencesData = [
   {
     title: 'SSC',
     location: 'St. Xaviers High School',
-    description: `Always among the top 5 toppers list, achieved 9 Certificates of Honour in studies throughout my school. Also excelling in sports, won 5 Certificate of achievement in Athletics/sprint. Percentage - 87`,
+    description: `Always among the top 5 toppers list, achieved 9 Certificates of Honour in studies throughout my school. Also excelling in sports, won 5 Certificate of achievement in Athletics/sprint. 
+    Percentage - 87`,
     icon: React.createElement(LaptopMinimalIcon),
     date: 'March 2020',
   },
