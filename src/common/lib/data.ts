@@ -176,5 +176,5 @@ export const skillsData = [
   ['C', '/svgs/c.svg'],
   ['Python', '/svgs/python.svg'],
   ['Java', '/svgs/java.svg'],
-  ['', '/svgs/etc.svg']
+  ['Roadmap', '/svgs/etc.svg']
 ] as const;
