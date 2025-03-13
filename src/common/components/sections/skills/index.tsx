@@ -1,7 +1,7 @@
 // src/common/components/sections/skills/index.tsx
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { skillsData } from "@/common/lib/data";
 import { useSectionInView } from "@/common/lib/hooks";
 import { motion } from "framer-motion";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import SectionHeading from "@/common/components/shared/section-heading";
 import SectionDivider from "@/common/components/shared/section-divider";
 import { useTheme } from 'next-themes';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiExternalLink } from 'react-icons/fi';
 import GitHubStatsDashboard from "@/common/components/sections/github-stats-dashboard";
 
 const fadeInAnimationVariants = {
@@ -26,9 +26,37 @@ const fadeInAnimationVariants = {
   }),
 };
 
+// Mapping of skills to their documentation/learning resources
+const skillLinks: Record<string, string> = {
+  'JavaScript': 'https://www.w3schools.com/js/',
+  'TypeScript': 'https://www.typescriptlang.org/docs/',
+  'React': 'https://react.dev/',
+  'Next.js': 'https://nextjs.org/docs',
+  'Node.js': 'https://nodejs.org/en/docs/',
+  'Express': 'https://expressjs.com/',
+  'Firebase': 'https://firebase.google.com/docs',
+  'Bootstrap': 'https://getbootstrap.com/docs/',
+  'ShadCN': 'https://ui.shadcn.com/',
+  'Framer': 'https://www.framer.com/motion/',
+  'Tailwind': 'https://tailwindcss.com/docs',
+  'MongoDB': 'https://docs.mongodb.com/',
+  'MySQL': 'https://dev.mysql.com/doc/',
+  'HTML': 'https://developer.mozilla.org/en-US/docs/Web/HTML',
+  'CSS': 'https://developer.mozilla.org/en-US/docs/Web/CSS',
+  'Git': 'https://git-scm.com/doc',
+  'Cloudinary': 'https://cloudinary.com/documentation',
+  'WebRTC': 'https://webrtc.org/getting-started/overview',
+  'GitHub': 'https://docs.github.com/',
+  'C': 'https://devdocs.io/c/',
+  'Python': 'https://docs.python.org/',
+  'Java': 'https://docs.oracle.com/en/java/',
+  '': 'https://roadmap.sh/'
+};
+
 export default function Skills() {
   const { ref } = useSectionInView("skills", 0.2);
   const { theme } = useTheme();
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
 
   // Enhanced animations
   const headingVariants = {
@@ -40,26 +68,24 @@ export default function Skills() {
     }
   };
 
-  // Continuing from the previous Skills component code...
-
-const floatingArrowVariants = {
-  animate: {
-    y: [0, -10, 0],
-    opacity: [0.3, 1, 0.3],
-    transition: {
-      y: {
-        repeat: Infinity,
-        duration: 2,
-        ease: "easeInOut",
-      },
-      opacity: {
-        repeat: Infinity,
-        duration: 2,
-        ease: "easeInOut",
+  const floatingArrowVariants = {
+    animate: {
+      y: [0, -10, 0],
+      opacity: [0.3, 1, 0.3],
+      transition: {
+        y: {
+          repeat: Infinity,
+          duration: 2,
+          ease: "easeInOut",
+        },
+        opacity: {
+          repeat: Infinity,
+          duration: 2,
+          ease: "easeInOut",
+        }
       }
     }
-  }
-};
+  };
 
   // Background particles
   const particles = Array.from({ length: 20 }, (_, i) => i);
@@ -87,6 +113,22 @@ const floatingArrowVariants = {
       y: 0,
       transition: { duration: 0.6, delay: 0.2 } 
     }
+  };
+
+  // Tooltip animation
+  const tooltipVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.2 } 
+    }
+  };
+
+  // Handle skill click
+  const handleSkillClick = (skillName: string) => {
+    const link = skillLinks[skillName] || 'https://github.com/salifshaikh';
+    window.open(link, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -150,7 +192,7 @@ const floatingArrowVariants = {
         <ul className="my-16 flex max-w-[53rem] flex-wrap items-center justify-center gap-3 mx-auto">
           {skillsData.map((skill, index) => (
             <motion.li
-              className="borderBlack flex items-center justify-center rounded-xl bg-gray-200 px-5 py-3 dark:bg-white/10 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1"
+              className="borderBlack relative flex items-center justify-center rounded-xl bg-gray-200 px-5 py-3 dark:bg-white/10 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
               key={index}
               variants={fadeInAnimationVariants}
               initial="initial"
@@ -159,6 +201,9 @@ const floatingArrowVariants = {
                 once: true,
               }}
               custom={index}
+              onClick={() => handleSkillClick(skill[0])}
+              onMouseEnter={() => setHoveredSkill(skill[0])}
+              onMouseLeave={() => setHoveredSkill(null)}
             >
               <Image
                 src={skill[1]}
@@ -168,6 +213,19 @@ const floatingArrowVariants = {
                 className="mr-2 inline h-6 w-6"
               />
               {skill[0]}
+              
+              {/* Tooltip */}
+              {hoveredSkill === skill[0] && (
+                <motion.div
+                  className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded flex items-center whitespace-nowrap"
+                  variants={tooltipVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <FiExternalLink className="mr-1" />
+                  Open in new tab
+                </motion.div>
+              )}
             </motion.li>
           ))}
         </ul>
