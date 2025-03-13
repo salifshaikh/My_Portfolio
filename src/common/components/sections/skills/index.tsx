@@ -1,3 +1,4 @@
+// src/common/components/sections/skills/index.tsx
 "use client";
 
 import React from "react";
@@ -9,6 +10,7 @@ import SectionHeading from "@/common/components/shared/section-heading";
 import SectionDivider from "@/common/components/shared/section-divider";
 import { useTheme } from 'next-themes';
 import { FiChevronDown } from 'react-icons/fi';
+import GitHubStatsDashboard from "@/common/components/sections/github-stats-dashboard";
 
 const fadeInAnimationVariants = {
   initial: {
@@ -38,24 +40,26 @@ export default function Skills() {
     }
   };
 
-  const floatingArrowVariants = {
-    animate: {
-      y: [0, -10, 0],
-      opacity: [0.3, 1, 0.3],
-      transition: {
-        y: {
-          repeat: Infinity,
-          duration: 2,
-          ease: "easeInOut",
-        },
-        opacity: {
-          repeat: Infinity,
-          duration: 2,
-          ease: "easeInOut",
-        }
+  // Continuing from the previous Skills component code...
+
+const floatingArrowVariants = {
+  animate: {
+    y: [0, -10, 0],
+    opacity: [0.3, 1, 0.3],
+    transition: {
+      y: {
+        repeat: Infinity,
+        duration: 2,
+        ease: "easeInOut",
+      },
+      opacity: {
+        repeat: Infinity,
+        duration: 2,
+        ease: "easeInOut",
       }
     }
-  };
+  }
+};
 
   // Background particles
   const particles = Array.from({ length: 20 }, (_, i) => i);
@@ -73,6 +77,16 @@ export default function Skills() {
         ease: "easeInOut",
       }
     })
+  };
+
+  // Sub-section heading animation
+  const subHeadingVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, delay: 0.2 } 
+    }
   };
 
   return (
@@ -157,6 +171,25 @@ export default function Skills() {
             </motion.li>
           ))}
         </ul>
+        
+        {/* GitHub Stats Dashboard Section */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={subHeadingVariants}
+          className="mt-24 mb-12 text-center"
+        >
+          <h3 className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Stats Dashboard
+          </h3>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600 dark:text-gray-300">
+            A real-time view of my GitHub activity and coding profile.
+          </p>
+        </motion.div>
+        
+        {/* GitHub Stats Dashboard Component */}
+        <GitHubStatsDashboard />
       </div>
 
       <div className="mt-16 flex w-full justify-center dark:bg-darkBg">
