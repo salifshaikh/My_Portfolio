@@ -127,7 +127,7 @@ export default function Skills() {
 
   // Handle skill click
   const handleSkillClick = (skillName: string) => {
-    const link = skillLinks[skillName] || 'https://github.com/salifshaikh';
+    const link = skillLinks[skillName] || 'https://roadmap.sh/';
     window.open(link, '_blank', 'noopener,noreferrer');
   };
 
