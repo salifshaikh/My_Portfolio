@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useSectionInView } from "@/common/lib/hooks";
 import SubmitBtn from "./_components/submit-btn";
 import SectionHeading from "@/common/components/shared/section-heading";
+import AISuggestion from "@/common/components/shared/ai-suggestion";
 import toast from "react-hot-toast";
 import { sendEmail } from "@/common/utils/actions/send-email";
 import { useTheme } from 'next-themes';
@@ -12,6 +13,7 @@ import { useTheme } from 'next-themes';
 export default function Contact() {
   const { ref } = useSectionInView("contact");
   const { theme } = useTheme();
+  const [message, setMessage] = useState("");
 
   // Animation variants
   const containerVariants = {
@@ -59,6 +61,14 @@ export default function Contact() {
         ease: "easeInOut",
       }
     })
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
+  const handleApplySuggestion = (suggestion: string) => {
+    setMessage(suggestion);
   };
 
   return (
@@ -133,6 +143,7 @@ export default function Contact() {
                 }
 
                 toast.success("Email sent successfully!");
+                setMessage(""); // Clear the message after successful submission
               }}
             >
               <div className="mb-4">
@@ -149,7 +160,7 @@ export default function Contact() {
                   placeholder="your.email@example.com"
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-2">
                 <label htmlFor="message" className="mb-2 block text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                   Your Message
                 </label>
@@ -160,8 +171,19 @@ export default function Contact() {
                   placeholder="Hello! I'd like to discuss a project..."
                   required
                   maxLength={5000}
+                  value={message}
+                  onChange={handleMessageChange}
                 />
               </div>
+              
+              {/* AI Suggestion Component */}
+              <div className="mb-4 text-left">
+                <AISuggestion 
+                  message={message} 
+                  onApplySuggestion={handleApplySuggestion} 
+                />
+              </div>
+              
               <div className="flex justify-center">
                 <SubmitBtn />
               </div>
