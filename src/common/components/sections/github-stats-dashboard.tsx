@@ -1,4 +1,5 @@
 // src/common/components/sections/github-stats-dashboard.tsx
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ export default function GitHubStatsDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
-  
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -22,7 +23,7 @@ export default function GitHubStatsDashboard() {
         if (!response.ok) {
           throw new Error('Failed to fetch GitHub stats');
         }
-        
+
         const data = await response.json();
         setStats(data);
       } catch (err) {
@@ -32,10 +33,10 @@ export default function GitHubStatsDashboard() {
         setLoading(false);
       }
     };
-    
+
     fetchStats();
   }, []);
-  
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,7 +47,7 @@ export default function GitHubStatsDashboard() {
       }
     }
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -55,7 +56,7 @@ export default function GitHubStatsDashboard() {
       transition: { duration: 0.5 }
     }
   };
-  
+
   // Helper function to determine color intensity based on contribution count
   const getContributionColor = (count: number, theme: string | undefined) => {
     if (count === 0) return theme === 'dark' ? '#161b22' : '#ebedf0';
@@ -64,50 +65,50 @@ export default function GitHubStatsDashboard() {
     if (count < 10) return theme === 'dark' ? '#26a641' : '#30a14e';
     return theme === 'dark' ? '#39d353' : '#216e39';
   };
-  
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-48">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
-  
+
   if (error) {
     return (
-      <div className="text-center py-8 text-red-500">
-        <p>{error}</p>
+      <div className="text-center text-red-500 p-8">
+        {error}
       </div>
     );
   }
-  
+
   if (!stats || !stats.contributions || stats.contributions.length === 0) {
     return (
-      <div className="text-center py-8">
-        <p>No GitHub statistics available</p>
+      <div className="text-center p-8">
+        No GitHub statistics available
       </div>
     );
   }
-  
+
   // Process the contributions data to create a clean visualization
   const today = new Date();
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(today.getFullYear() - 1);
-  
+
   // Map each day to its contribution count for easy lookup
   const contributionMap = new Map();
   stats.contributions.forEach(day => {
     contributionMap.set(day.date, day.count);
   });
-  
+
   // Create an array of weeks for the past year
   const weeks = [];
   let currentDate = new Date(oneYearAgo);
-  
+
   // Align to the start of the week (Sunday)
   const dayOfWeek = currentDate.getDay();
   currentDate.setDate(currentDate.getDate() - dayOfWeek);
-  
+
   // Create a week for each of the 52 weeks in a year
   while (weeks.length < 53) {
     const week = [];
@@ -121,16 +122,15 @@ export default function GitHubStatsDashboard() {
     }
     weeks.push(week);
   }
-  
+
   // Extract months for the month labels
   const months: { label: string; position: number }[] = [];
   const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   let lastMonth = -1;
-  
+
   weeks.forEach((week, weekIndex) => {
     const date = new Date(week[0].date);
     const month = date.getMonth();
-    
     if (month !== lastMonth) {
       months.push({
         label: monthLabels[month],
@@ -139,143 +139,135 @@ export default function GitHubStatsDashboard() {
       lastMonth = month;
     }
   });
-  
+
   return (
     <motion.div
+      className="space-y-8 p-6"
       variants={containerVariants}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      className="w-full max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
+      animate="visible"
     >
-      <div className="px-6 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <motion.div variants={itemVariants} className="flex items-center">
-            <FiGithub className="text-2xl mr-2 text-gray-700 dark:text-gray-300" />
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">GitHub Stats Dashboard</h3>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <a 
-              href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'salifshaikh'}`}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 text-sm"
-            >
-              View Profile →
-            </a>
-          </motion.div>
+      {/* Header */}
+      <motion.div variants={itemVariants} className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <FiGithub className="text-4xl" />
+          <h2 className="text-3xl font-bold">GitHub Stats Dashboard</h2>
         </div>
-        
-        {/* Stats summary */}
-        <motion.div 
-          variants={itemVariants}
-          className="grid grid-cols-3 gap-4 mb-8"
+        <a
+          href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'salifshaikh'}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition"
         >
-          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-            <div className="text-3xl font-bold text-blue-500">{stats.totalContributions}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Contributions</div>
+          View Profile →
+        </a>
+      </motion.div>
+
+      {/* Stats summary */}
+      <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-card p-6 rounded-lg shadow-md">
+          <div className="flex items-center gap-3 mb-2">
+            <FiCalendar className="text-2xl text-primary" />
+            <h3 className="text-lg font-semibold">Total Contributions</h3>
           </div>
-          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-            <div className="text-3xl font-bold text-green-500">{stats.totalRepos}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Repositories</div>
+          <p className="text-3xl font-bold">{stats.totalContributions}</p>
+          <p className="text-sm text-muted-foreground">Contributions</p>
+        </div>
+
+        <div className="bg-card p-6 rounded-lg shadow-md">
+          <div className="flex items-center gap-3 mb-2">
+            <FiCode className="text-2xl text-primary" />
+            <h3 className="text-lg font-semibold">Public Repositories</h3>
           </div>
-          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
-            <div className="text-3xl font-bold text-yellow-500">{stats.totalStars}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Stars</div>
+          <p className="text-3xl font-bold">{stats.totalRepos}</p>
+          <p className="text-sm text-muted-foreground">Repositories</p>
+        </div>
+
+        <div className="bg-card p-6 rounded-lg shadow-md">
+          <div className="flex items-center gap-3 mb-2">
+            <FiGithub className="text-2xl text-primary" />
+            <h3 className="text-lg font-semibold">Total Stars</h3>
           </div>
-        </motion.div>
+          <p className="text-3xl font-bold">{stats.totalStars}</p>
+          <p className="text-sm text-muted-foreground">Stars</p>
+        </div>
+      </motion.div>
+
+      {/* Languages Section */}
+      <motion.div variants={itemVariants} className="bg-card p-6 rounded-lg shadow-md">
+        <h3 className="text-xl font-bold mb-4">Most Used Languages</h3>
+        <div className="space-y-3">
+          {stats.languages.map(lang => (
+            <div key={lang.name} className="flex items-center gap-3">
+              <div
+                className="w-4 h-4 rounded-full"
+                style={{ backgroundColor: lang.color }}
+              />
+              <span className="flex-1">{lang.name}</span>
+              <span className="font-semibold">{lang.percentage}%</span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Contribution Calendar Section */}
+      <motion.div variants={itemVariants} className="bg-card p-6 rounded-lg shadow-md">
+        <h3 className="text-xl font-bold mb-4">Contribution Activity</h3>
         
-        {/* Languages Section */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <div className="flex items-center mb-4">
-            <FiCode className="mr-2 text-gray-700 dark:text-gray-300" />
-            <h4 className="text-lg font-semibold text-gray-800 dark:text-white">Most Used Languages</h4>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {stats.languages.map(lang => (
-              <div key={lang.name} className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                <div 
-                  className="w-full h-2 rounded-full mb-2"
-                  style={{ backgroundColor: lang.color }}
-                ></div>
-                <div className="font-medium">{lang.name}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">{lang.percentage}%</div>
+        <div className="overflow-x-auto">
+          {/* Month Labels */}
+          <div className="flex mb-2 pl-8">
+            {months.map((month, i) => (
+              <div
+                key={i}
+                className="text-xs text-muted-foreground"
+                style={{ width: `${100 / 53}%`, marginLeft: `${(month.position * 100) / 53}%` }}
+              >
+                {month.label}
               </div>
             ))}
           </div>
-        </motion.div>
-        
-        {/* Contribution Calendar Section */}
-        <motion.div variants={itemVariants}>
-          <div className="flex items-center mb-4">
-            <FiCalendar className="mr-2 text-gray-700 dark:text-gray-300" />
-            <h4 className="text-lg font-semibold text-gray-800 dark:text-white">Contribution Activity</h4>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-700 rounded-lg p-4">
-            {/* Month Labels */}
-            <div className="flex text-xs text-gray-500 mb-1 pl-10">
-              {months.map((month, i) => (
-                <div 
-                  key={i}
-                  className="absolute text-xs text-gray-500"
-                  style={{ 
-                    left: `${(month.position / 53) * 100}%`, 
-                    transform: 'translateX(-50%)' 
-                  }}
-                >
-                  {month.label}
+
+          {/* Contribution Grid */}
+          <div className="flex gap-1">
+            {/* Day Labels */}
+            <div className="flex flex-col justify-between text-xs text-muted-foreground pr-2">
+              <span>Mon</span>
+              <span>Wed</span>
+              <span>Fri</span>
+            </div>
+
+            {/* Calendar */}
+            <div className="flex gap-1">
+              {weeks.map((week, weekIndex) => (
+                <div key={weekIndex} className="flex flex-col gap-1">
+                  {week.map((day, dayIndex) => (
+                    <div
+                      key={dayIndex}
+                      className="w-3 h-3 rounded-sm"
+                      style={{ backgroundColor: getContributionColor(day.count, theme) }}
+                      title={`${day.date}: ${day.count} contributions`}
+                    />
+                  ))}
                 </div>
               ))}
             </div>
-            
-            {/* Contribution Grid */}
-            <div className="flex mt-6">
-              {/* Day Labels */}
-              <div className="flex flex-col justify-between h-28 pr-2 text-xs text-gray-500">
-                <div>Mon</div>
-                <div>Wed</div>
-                <div>Fri</div>
-              </div>
-              
-              {/* Calendar */}
-              <div className="flex flex-1 overflow-hidden">
-                {weeks.map((week, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col">
-                    {week.map((day, dayIndex) => (
-                      <div 
-                        key={`${weekIndex}-${dayIndex}`}
-                        className="w-3 h-3 m-0.5 rounded-sm relative group"
-                        style={{ backgroundColor: getContributionColor(day.count, theme) }}
-                      >
-                        <div className="absolute hidden group-hover:block z-10 bg-gray-800 text-white text-xs rounded p-1 -translate-y-full -translate-x-1/2 whitespace-nowrap left-1/2 top-0">
-                          {day.date}: {day.count} contributions
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Legend */}
-            <div className="flex items-center justify-end mt-2">
-              <span className="text-xs text-gray-500 mr-2">Less</span>
-              <div className="flex">
-                {[0, 2, 5, 10, 15].map(level => (
-                  <div 
-                    key={level}
-                    className="w-3 h-3 mx-0.5 rounded-sm"
-                    style={{ backgroundColor: getContributionColor(level, theme) }}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-gray-500 ml-2">More</span>
-            </div>
           </div>
-        </motion.div>
-      </div>
+
+          {/* Legend */}
+          <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
+            <span>Less</span>
+            {[0, 2, 5, 10, 15].map(level => (
+              <div
+                key={level}
+                className="w-3 h-3 rounded-sm"
+                style={{ backgroundColor: getContributionColor(level, theme) }}
+              />
+            ))}
+            <span>More</span>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

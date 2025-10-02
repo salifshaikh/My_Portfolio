@@ -1,4 +1,5 @@
 // src/common/lib/github-service.ts
+
 import axios from 'axios';
 import { graphql } from '@octokit/graphql';
 
@@ -53,8 +54,22 @@ async function fetchContributions(): Promise<{ contributions: ContributionDay[],
         authorization: `token ${process.env.GITHUB_API_TOKEN}`,
       },
     });
-    
-    const response: { user: { contributionsCollection: { contributionCalendar: { totalContributions: number, weeks: { contributionDays: { date: string, contributionCount: number }[] }[] } } } } = await graphqlWithAuth(`
+
+    const response: { 
+      user: { 
+        contributionsCollection: { 
+          contributionCalendar: { 
+            totalContributions: number, 
+            weeks: { 
+              contributionDays: { 
+                date: string, 
+                contributionCount: number 
+              }[] 
+            }[] 
+          } 
+        } 
+      } 
+    } = await graphqlWithAuth(`
       query {
         user(login: "${GITHUB_USERNAME}") {
           contributionsCollection {
@@ -71,11 +86,11 @@ async function fetchContributions(): Promise<{ contributions: ContributionDay[],
         }
       }
     `);
+
     const { user } = response;
-    
     const contributions: ContributionDay[] = [];
     let totalContributions = 0;
-    
+
     if (user.contributionsCollection) {
       totalContributions = user.contributionsCollection.contributionCalendar.totalContributions;
       
@@ -88,7 +103,7 @@ async function fetchContributions(): Promise<{ contributions: ContributionDay[],
         }
       }
     }
-    
+
     return { contributions, totalContributions };
   } catch (error) {
     console.error('Error fetching GitHub contributions:', error);
@@ -102,34 +117,34 @@ export async function fetchGitHubStats(): Promise<GitHubStats> {
     // Fetch user profile
     const userResponse = await axios.get(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}`, { headers });
     const totalRepos = userResponse.data.public_repos;
-    
+
     // Fetch repositories
     const reposResponse = await axios.get(
       `${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?per_page=100`,
       { headers }
     );
     const repos = reposResponse.data;
-    
+
     // Calculate total stars
     const totalStars = repos.reduce((sum: number, repo: any) => sum + repo.stargazers_count, 0);
-    
+
     // Fetch languages
     const languagesMap: Record<string, number> = {};
     let totalBytes = 0;
-    
+
     // Process up to 5 repos to avoid rate limiting
     const reposToProcess = repos.slice(0, 5);
     
     for (const repo of reposToProcess) {
       const langResponse = await axios.get(repo.languages_url, { headers });
       const langData = langResponse.data;
-      
+
       for (const [lang, bytes] of Object.entries(langData)) {
         languagesMap[lang] = (languagesMap[lang] || 0) + (bytes as number);
         totalBytes += bytes as number;
       }
     }
-    
+
     // Calculate percentages and prepare language data
     const languages: LanguageData[] = Object.entries(languagesMap)
       .map(([name, bytes]) => ({
@@ -139,10 +154,10 @@ export async function fetchGitHubStats(): Promise<GitHubStats> {
       }))
       .sort((a, b) => b.percentage - a.percentage)
       .slice(0, 5);
-    
+
     // Fetch contributions using GraphQL
     const { contributions, totalContributions } = await fetchContributions();
-    
+
     return {
       languages,
       contributions,
