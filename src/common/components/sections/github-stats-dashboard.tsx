@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from 'next-themes';
-import { FiGithub, FiCode, FiCalendar } from 'react-icons/fi';
+import { FiGithub, FiCode, FiCalendar, FiExternalLink } from 'react-icons/fi';
 import { GitHubStats } from '@/common/lib/github-service';
+import GitHubCalendar from 'react-github-calendar';
+
 
 export default function GitHubStatsDashboard() {
   const [stats, setStats] = useState<GitHubStats | null>(null);
@@ -34,6 +36,7 @@ export default function GitHubStatsDashboard() {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
+  
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } }
@@ -50,10 +53,11 @@ export default function GitHubStatsDashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
+  
   if (error) {
     return (
       <div className="text-center text-red-500 p-8">
@@ -61,9 +65,10 @@ export default function GitHubStatsDashboard() {
       </div>
     );
   }
+  
   if (!stats || !stats.contributions || stats.contributions.length === 0) {
     return (
-      <div className="text-center p-8">
+      <div className="text-center p-8 text-gray-400">
         No GitHub statistics available
       </div>
     );
@@ -75,173 +80,150 @@ export default function GitHubStatsDashboard() {
     contributionMap.set(day.date, day.count);
   });
 
-  // Prepare calendar dates, starting 1 year ago, ending today
+  // Build exactly 53 weeks of data
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // ensure date-only
-  const oneYearAgo = new Date(today);
-  oneYearAgo.setFullYear(today.getFullYear() - 1);
-
-  let startDate = new Date(oneYearAgo);
-  startDate.setDate(startDate.getDate() - startDate.getDay()); // align to start-of-week
-
+  today.setHours(0, 0, 0, 0);
+  
+  // Go back 371 days (53 weeks)
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - 371);
+  
+  // Align to Sunday
+  while (startDate.getDay() !== 0) {
+    startDate.setDate(startDate.getDate() - 1);
+  }
+  
   const weeks = [];
   let currentDate = new Date(startDate);
 
-  // Build weeks array with dates
-  while (currentDate <= today) {
+  // Build 53 weeks
+  for (let w = 0; w < 53; w++) {
     const week = [];
-    for (let i = 0; i < 7; i++) {
-      if (currentDate > today) break;
+    for (let d = 0; d < 7; d++) {
       const dateString = currentDate.toISOString().split('T')[0];
+      const isFuture = currentDate > today;
       week.push({
         date: dateString,
-        count: contributionMap.get(dateString) || 0
+        count: isFuture ? -1 : (contributionMap.get(dateString) || 0)
       });
       currentDate.setDate(currentDate.getDate() + 1);
     }
     weeks.push(week);
   }
 
-  // Calculate month label positions accurately
-  const months: { label: string; position: number }[] = [];
+  // Calculate months for labels
   const monthLabels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  let lastMonth = -1;
+  const months: { label: string; weekIndex: number }[] = [];
+  
   weeks.forEach((week, weekIndex) => {
-    const firstDay = week[0];
-    if (firstDay) {
-      const date = new Date(firstDay.date);
-      const month = date.getMonth();
-      if (month !== lastMonth) {
-        months.push({ label: monthLabels[month], position: weekIndex });
-        lastMonth = month;
-      }
+    const date = new Date(week[0].date);
+    const isFirstWeekOfMonth = date.getDate() <= 7;
+    
+    if (isFirstWeekOfMonth && weekIndex > 0) {
+      months.push({
+        label: monthLabels[date.getMonth()],
+        weekIndex: weekIndex
+      });
     }
   });
-
-  // Calculate the width of the calendar for label alignment
-  const weekCount = weeks.length;
+  
+  // Add first month
+  if (months.length === 0 || months[0].weekIndex > 0) {
+    const firstDate = new Date(weeks[0][0].date);
+    months.unshift({
+      label: monthLabels[firstDate.getMonth()],
+      weekIndex: 0
+    });
+  }
 
   return (
-    <motion.div className="space-y-8 p-6" variants={containerVariants} initial="hidden" animate="visible">
+    <motion.div 
+      className="w-full max-w-7xl mx-auto space-y-8 p-6"
+      variants={containerVariants} 
+      initial="hidden" 
+      animate="visible"
+    >
       {/* Header */}
-      <motion.div variants={itemVariants} className="flex items-center justify-between">
+      <motion.div variants={itemVariants} className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <FiGithub className="text-4xl" />
-          <h2 className="text-3xl font-bold">GitHub Stats Dashboard</h2>
+          <FiGithub className="text-4xl text-white" />
+          <h2 className="text-3xl font-bold text-white">GitHub Stats Dashboard</h2>
         </div>
         <a
           href={`https://github.com/${process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'salifshaikh'}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition"
+          className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
         >
-          View Profile →
+          View Profile
+          <FiExternalLink className="text-sm" />
         </a>
       </motion.div>
 
-      {/* Stats summary */}
+      {/* Stats Cards */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-card p-6 rounded-lg shadow-md">
-          <div className="flex items-center gap-3 mb-2">
-            <FiCalendar className="text-2xl text-primary" />
-            <h3 className="text-lg font-semibold">Total Contributions</h3>
+        <div className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-xl hover:border-blue-500/50 transition-all duration-200">
+          <div className="flex items-center gap-3 mb-3">
+            <FiCalendar className="text-3xl text-blue-400" />
+            <h3 className="text-lg font-semibold text-gray-200">Total Contributions</h3>
           </div>
-          <p className="text-3xl font-bold">{stats.totalContributions}</p>
-          <p className="text-sm text-muted-foreground">Contributions</p>
+          <p className="text-4xl font-bold text-white mb-1">{stats.totalContributions}</p>
+          <p className="text-sm text-gray-400">in the last year</p>
         </div>
-        <div className="bg-card p-6 rounded-lg shadow-md">
-          <div className="flex items-center gap-3 mb-2">
-            <FiCode className="text-2xl text-primary" />
-            <h3 className="text-lg font-semibold">Public Repositories</h3>
+
+        <div className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-xl hover:border-green-500/50 transition-all duration-200">
+          <div className="flex items-center gap-3 mb-3">
+            <FiCode className="text-3xl text-green-400" />
+            <h3 className="text-lg font-semibold text-gray-200">Public Repositories</h3>
           </div>
-          <p className="text-3xl font-bold">{stats.totalRepos}</p>
-          <p className="text-sm text-muted-foreground">Repositories</p>
+          <p className="text-4xl font-bold text-white mb-1">{stats.totalRepos}</p>
+          <p className="text-sm text-gray-400">Repositories</p>
         </div>
-        <div className="bg-card p-6 rounded-lg shadow-md">
-          <div className="flex items-center gap-3 mb-2">
-            <FiGithub className="text-2xl text-primary" />
-            <h3 className="text-lg font-semibold">Total Stars</h3>
+
+        <div className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-xl hover:border-yellow-500/50 transition-all duration-200">
+          <div className="flex items-center gap-3 mb-3">
+            <FiGithub className="text-3xl text-yellow-400" />
+            <h3 className="text-lg font-semibold text-gray-200">Total Stars</h3>
           </div>
-          <p className="text-3xl font-bold">{stats.totalStars}</p>
-          <p className="text-sm text-muted-foreground">Stars</p>
+          <p className="text-4xl font-bold text-white mb-1">{stats.totalStars}</p>
+          <p className="text-sm text-gray-400">Stars Received</p>
         </div>
       </motion.div>
 
       {/* Languages Section */}
-      <motion.div variants={itemVariants} className="bg-card p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-bold mb-4">Most Used Languages</h3>
-        <div className="space-y-3">
+      <motion.div variants={itemVariants} className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-xl">
+        <h3 className="text-2xl font-bold mb-6 text-white">Most Used Languages</h3>
+        <div className="space-y-4">
           {stats.languages.map(lang => (
-            <div key={lang.name} className="flex items-center gap-3">
-              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: lang.color }} />
-              <span className="flex-1">{lang.name}</span>
-              <span className="font-semibold">{lang.percentage}%</span>
+            <div key={lang.name} className="flex items-center gap-4">
+              <div
+                className="w-5 h-5 rounded-full shadow-md"
+                style={{ backgroundColor: lang.color }}
+              />
+              <span className="flex-1 text-gray-200 font-medium">{lang.name}</span>
+              <div className="flex items-center gap-3">
+                <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{ 
+                      width: `${lang.percentage}%`,
+                      backgroundColor: lang.color 
+                    }}
+                  />
+                </div>
+                <span className="text-lg font-bold text-white min-w-[50px] text-right">
+                  {lang.percentage}%
+                </span>
+              </div>
             </div>
           ))}
         </div>
       </motion.div>
 
-      {/* Contribution Calendar Section */}
-      <motion.div variants={itemVariants} className="bg-card p-6 rounded-lg shadow-md overflow-x-auto">
-        <h3 className="text-xl font-bold mb-4">Contribution Activity</h3>
-        {/* Month Labels */}
-        <div className="relative mb-2 pl-8" style={{ minWidth: 'fit-content' }}>
-          <div className="flex" style={{ position: 'absolute', top: 0 }}>
-            {months.map((month, i) => (
-              <span
-                key={i}
-                className="text-xs text-muted-foreground"
-                style={{
-                  position: 'absolute',
-                  left: `${(month.position / weekCount) * 100}%`,
-                  minWidth: '32px',
-                  background: 'transparent'
-                }}
-              >
-                {month.label}
-              </span>
-            ))}
-          </div>
-        </div>
-        {/* Contribution Grid */}
-        <div className="flex gap-1">
-          {/* Day Labels */}
-          <div className="flex flex-col justify-between text-xs text-muted-foreground pr-2">
-            <span>Mon</span>
-            <span>Wed</span>
-            <span>Fri</span>
-          </div>
-          {/* Calendar */}
-          <div className="flex gap-[2px]" style={{ minWidth: 'fit-content' }}>
-            {weeks.map((week, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col gap-[2px]">
-                {week.map((day, dayIndex) => (
-                  <div
-                    key={dayIndex}
-                    className="w-3 h-3 rounded-sm"
-                    style={{
-                      backgroundColor: getContributionColor(day.count, theme),
-                      boxSizing: 'border-box'
-                    }}
-                    title={`${day.date}: ${day.count} contributions`}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Legend */}
-        <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground">
-          <span>Less</span>
-          {[0, 2, 5, 10, 15].map(level => (
-            <div
-              key={level}
-              className="w-3 h-3 rounded-sm"
-              style={{ backgroundColor: getContributionColor(level, theme) }}
-            />
-          ))}
-          <span>More</span>
-        </div>
+      {/* Contribution Calendar */}
+      <motion.div variants={itemVariants} className="bg-gray-900 border text-white border-gray-800 p-6 rounded-xl shadow-xl overflow-x-auto">
+        <h3 className="text-2xl font-bold mb-6 text-white">Contribution Activity</h3>
+          <GitHubCalendar username="salifshaikh" />
       </motion.div>
     </motion.div>
   );
