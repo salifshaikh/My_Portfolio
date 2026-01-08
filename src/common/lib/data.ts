@@ -47,13 +47,33 @@ export const experiencesData = [
   {
     title: 'Artificial Intelligence and Data Science',
     location: 'TSEC , Bandra',
-    description: ` Bachelor of Engineering Degree. Won 1x Hackathon organised by CSI-TSEC in 2024. Won Ideathon organised by IIC-TSEC in 2023. Avg c.g.p.a. - 7.97 `,
+    description: `Avg CGPA - 8.21 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028 \u2028
+    Bachelor of Engineering. Won 3x Hackathon. Relevant Coursework: Data Structures, DBMS, Computer Networks, Machine Learning, Cloud Computing, Data Analytics, Blockchain.`,
     icon: React.createElement(BriefcaseBusinessIcon),
     date: '2022 - 2026 | Present',
   },
   {
+    title: 'Web-Developer Intern',
+    location: 'SIRO Clintech | Mumbai',
+    description: `Designed modular React.js UIs for a clinical data platform. Optimized page load by 35% using code-splitting,
+                  dynamic import and React DevTools. Engineered robust, error-resistant API integrations with backend teams.
+                  Implemented automated testing infrastructure using Jest and React Testing Library, writing 40+ unit and
+                  integration tests for critical components (file upload, dashboard, job management).`,
+    icon: React.createElement(BookIcon),
+    date: ' 2025 | July-January',
+  },
+  {
+    title: 'AI Trainer Intern | California',
+    location: 'Outlier AI',
+    description: `Evaluated GenAI (LLM) prompt-response pairs for accuracy and consistency, building feedback tools to
+                  accelerate model improvements. Established repeatable, metrics-driven test frameworks for factuality and
+                  content guidelines.`,
+    icon: React.createElement(BookIcon),
+    date: ' 2025 | May-June',
+  },
+  {
     title: 'Web-Dev Intern',
-    location: 'Raise Digital',
+    location: 'Raise Digital | Bangalore',
     description: `Front-end Web Develpoer position. Responsible for implementation of accessible and interactive interface. Working on various projects with team successfully and completed the assigned project and got the Project completiion Certificate.`,
     icon: React.createElement(BookIcon),
     date: ' 2024 | March-April',

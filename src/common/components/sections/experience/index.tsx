@@ -15,7 +15,6 @@ import { motion } from 'framer-motion';
 import { FiChevronDown } from 'react-icons/fi';
 
 export default function Experience() {
-  // Updated threshold to be lower for better detection
   const { ref } = useSectionInView('experience', 0.2);
   const { theme } = useTheme();
   const hasMounted = useHasMounted();
