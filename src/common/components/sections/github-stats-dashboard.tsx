@@ -223,8 +223,9 @@ export default function GitHubStatsDashboard() {
       {/* Contribution Calendar */}
       <motion.div variants={itemVariants} className="bg-gray-900 border text-white border-gray-800 p-6 rounded-xl shadow-xl overflow-x-auto">
         <h3 className="text-2xl font-bold mb-6 text-white">Contribution Activity</h3>
-          <GitHubCalendar username="salifshaikh" />
-      </motion.div>
+<div className="flex justify-center">
+    <GitHubCalendar username="salifshaikh" />
+  </div>      </motion.div>
     </motion.div>
   );
 }
